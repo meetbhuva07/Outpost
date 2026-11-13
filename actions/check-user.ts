@@ -12,4 +12,16 @@ export async function checkUser() {
     });
 
     if (existing) return existing;
+
+    const email = clerkUser.emailAddresses[0]?.emailAddress;
+    if (!email) return null; 
+
+    return prisma.user.create({
+        data: {
+            clerkId: clerkUser.id,
+            email,
+            name: `${clerkUser.firstName ?? ""} ${clerkUser.lastName ?? ""}`.trim() || null ,
+            imageUrl: clerkUser.imageUrl,
+        },
+    });
 }
