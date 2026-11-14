@@ -49,10 +49,10 @@ function WindowFrame({
   return (
     <div
       aria-hidden="true"
-      className="relative w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0c0e] shadow-2xl transition-all hover:border-primary/40 hover:shadow-[0_0_35px_rgba(249,115,22,0.08)]"
+      className="relative w-full overflow-hidden rounded-2xl border border-white/8 bg-[#0c0c0e] shadow-2xl transition-all hover:border-primary/40 hover:shadow-[0_0_35px_rgba(249,115,22,0.08)]"
     >
       {/* Title bar */}
-      <div className="flex items-center border-b border-white/[0.08] bg-white/[0.02] px-5 py-3">
+      <div className="flex items-center border-b border-white/8 bg-white/2 px-5 py-3">
         <div className="flex flex-1 items-center gap-2">
           <span className="size-2.5 rounded-full bg-[#ff5f56] ring-1 ring-black/20 shadow-sm" />
           <span className="size-2.5 rounded-full bg-[#ffbd2e] ring-1 ring-black/20 shadow-sm" />

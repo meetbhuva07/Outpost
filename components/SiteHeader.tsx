@@ -5,7 +5,6 @@ import React from 'react';
 import { Button } from './ui/button';
 import { OrganizationSwitcher, Show, SignInButton, SignUpButton, useAuth, UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
-import { Organization } from '@clerk/nextjs/server';
 
 const SiteHeader = () => {
     const pathname = usePathname();
