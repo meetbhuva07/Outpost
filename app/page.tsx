@@ -7,17 +7,32 @@ import {
   SURFACES,
 } from "@/app/_data/landing";
 
+/* ── macOS Window Header (Red, Yellow, Green + Full-Width Divider Line) ── */
+
+function MacWindowBar({ title }: { title?: string }) {
+  return (
+    <div className="-mx-6 -mt-6 mb-6 flex items-center justify-between border-b border-white/[0.08] bg-white/[0.02] px-5 py-3">
+      <div className="flex items-center gap-2" aria-hidden="true">
+        <span className="size-2.5 rounded-full bg-[#ff5f56] ring-1 ring-black/20 shadow-sm" />
+        <span className="size-2.5 rounded-full bg-[#ffbd2e] ring-1 ring-black/20 shadow-sm" />
+        <span className="size-2.5 rounded-full bg-[#27c93f] ring-1 ring-black/20 shadow-sm" />
+      </div>
+      {title && (
+        <span className="font-mono text-[11px] font-medium tracking-wide text-zinc-500">
+          {title}
+        </span>
+      )}
+      <div className="w-12" aria-hidden="true" />
+    </div>
+  );
+}
+
 /* ── Inline Surface Visuals (built directly with Tailwind CSS) ──────── */
 
 function CanvasVisual() {
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-[#0c0c0e] p-6 shadow-2xl transition-all">
-      {/* Window Controls */}
-      <div className="mb-4 flex items-center gap-1.5" aria-hidden="true">
-        <span className="size-2 rounded-full bg-white/15" />
-        <span className="size-2 rounded-full bg-white/15" />
-        <span className="size-2 rounded-full bg-white/15" />
-      </div>
+    <div className="w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0c0e] p-6 shadow-2xl transition-all hover:border-white/15">
+      <MacWindowBar title="canvas.workspace" />
 
       {/* Whiteboard Flowchart Mock */}
       <div className="flex items-center justify-center py-2">
@@ -39,6 +54,9 @@ function CanvasVisual() {
             >
               <path d="M 0 1.5 L 6 4 L 0 6.5 z" fill="#71717a" />
             </marker>
+            <filter id="amber-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#ea580c" floodOpacity="0.35" />
+            </filter>
           </defs>
 
           {/* 1. Request Pill */}
@@ -50,7 +68,8 @@ function CanvasVisual() {
             rx="17"
             fill="#18130e"
             stroke="#ea580c"
-            strokeWidth="1.2"
+            strokeWidth="1.4"
+            filter="url(#amber-glow)"
           />
           <text
             x="190"
@@ -79,7 +98,7 @@ function CanvasVisual() {
           <polygon
             points="190,68 238,91 190,114 142,91"
             fill="#141417"
-            stroke="rgba(255,255,255,0.14)"
+            stroke="rgba(255,255,255,0.16)"
             strokeWidth="1.2"
           />
           <text
@@ -165,7 +184,7 @@ function CanvasVisual() {
             height="38"
             rx="8"
             fill="#141417"
-            stroke="rgba(255,255,255,0.12)"
+            stroke="rgba(255,255,255,0.14)"
             strokeWidth="1.2"
           />
           <text
@@ -187,7 +206,7 @@ function CanvasVisual() {
             height="38"
             rx="8"
             fill="#141417"
-            stroke="rgba(255,255,255,0.12)"
+            stroke="rgba(255,255,255,0.14)"
             strokeWidth="1.2"
           />
           <text
@@ -208,18 +227,13 @@ function CanvasVisual() {
 
 function DocsVisual() {
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-[#0c0c0e] p-6 shadow-2xl">
-      {/* Window Controls */}
-      <div className="mb-6 flex items-center gap-1.5" aria-hidden="true">
-        <span className="size-2 rounded-full bg-white/15" />
-        <span className="size-2 rounded-full bg-white/15" />
-        <span className="size-2 rounded-full bg-white/15" />
-      </div>
+    <div className="w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0c0e] p-6 shadow-2xl transition-all hover:border-white/15">
+      <MacWindowBar title="spec.doc" />
 
       {/* Doc Mock */}
       <div className="space-y-4 py-1">
         {/* H1 Heading Skeleton */}
-        <div className="h-5 w-52 rounded-sm bg-zinc-300 sm:w-60" />
+        <div className="h-5 w-52 rounded-sm bg-zinc-200/90 sm:w-60 shadow-sm" />
 
         {/* Paragraph Skeleton */}
         <div className="space-y-2 pt-1">
@@ -230,18 +244,18 @@ function DocsVisual() {
 
         {/* H2 Heading Skeleton */}
         <div className="pt-2">
-          <div className="h-3.5 w-32 rounded-sm bg-zinc-500" />
+          <div className="h-3.5 w-32 rounded-sm bg-zinc-400/90" />
         </div>
 
         {/* Agent Summary Callout */}
-        <div className="rounded-lg border border-amber-600/40 bg-[#1a120b] p-3.5 shadow-sm">
-          <div className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-orange-400">
-            <span className="text-[8px]">◆</span>
+        <div className="rounded-xl border border-amber-500/40 bg-gradient-to-r from-amber-950/40 to-amber-900/10 p-4 shadow-sm backdrop-blur-sm">
+          <div className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-amber-400">
+            <span className="text-[9px] text-amber-500">◆</span>
             <span>AGENT SUMMARY</span>
           </div>
           <div className="mt-2.5 space-y-1.5">
-            <div className="h-1.5 w-11/12 rounded-sm bg-orange-700/50" />
-            <div className="h-1.5 w-3/4 rounded-sm bg-orange-700/40" />
+            <div className="h-1.5 w-11/12 rounded-sm bg-amber-500/35" />
+            <div className="h-1.5 w-3/4 rounded-sm bg-amber-500/25" />
           </div>
         </div>
 
@@ -257,28 +271,23 @@ function DocsVisual() {
 
 function BoardVisual() {
   return (
-    <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0e] p-5 shadow-2xl">
-      {/* Window Controls */}
-      <div className="mb-6 flex items-center gap-1.5" aria-hidden="true">
-        <span className="size-2 rounded-full bg-white/15" />
-        <span className="size-2 rounded-full bg-white/15" />
-        <span className="size-2 rounded-full bg-white/15" />
-      </div>
+    <div className="relative w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0c0e] p-6 shadow-2xl transition-all hover:border-white/15">
+      <MacWindowBar title="team.board" />
 
       {/* 3 Columns Grid */}
       <div className="grid grid-cols-3 gap-2.5 py-1 sm:gap-3">
         {/* Column 1: PLANNING */}
         <div>
-          <h4 className="mb-3 font-mono text-[10px] font-semibold tracking-widest text-neutral-400">
+          <h4 className="mb-3 font-mono text-[10px] font-semibold tracking-widest text-zinc-400">
             PLANNING
           </h4>
           <div className="space-y-2.5">
-            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
-              <p className="text-xs font-medium text-white/90">Onboarding flow</p>
+            <div className="rounded-xl border border-white/[0.08] bg-[#141417] p-3 shadow-sm hover:border-white/20 transition-colors">
+              <p className="text-xs font-medium text-white/95">Onboarding flow</p>
               <div className="mt-2.5 h-1 w-12 rounded-full bg-zinc-800" />
             </div>
-            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
-              <p className="text-xs font-medium text-white/90">Billing ERD</p>
+            <div className="rounded-xl border border-white/[0.08] bg-[#141417] p-3 shadow-sm hover:border-white/20 transition-colors">
+              <p className="text-xs font-medium text-white/95">Billing ERD</p>
               <div className="mt-2.5 h-1 w-12 rounded-full bg-zinc-800" />
             </div>
           </div>
@@ -286,20 +295,20 @@ function BoardVisual() {
 
         {/* Column 2: IN PROGRESS */}
         <div>
-          <h4 className="mb-3 font-mono text-[10px] font-semibold tracking-widest text-neutral-400">
+          <h4 className="mb-3 font-mono text-[10px] font-semibold tracking-widest text-zinc-400">
             IN PROGRESS
           </h4>
           <div className="space-y-2.5">
-            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
-              <p className="text-xs font-medium text-white/90">API architecture</p>
+            <div className="rounded-xl border border-white/[0.08] bg-[#141417] p-3 shadow-sm hover:border-white/20 transition-colors">
+              <p className="text-xs font-medium text-white/95">API architecture</p>
               <div className="mt-2.5 h-1 w-14 rounded-full bg-zinc-800" />
             </div>
-            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
-              <p className="text-xs font-medium text-white/90">Launch spec</p>
+            <div className="rounded-xl border border-white/[0.08] bg-[#141417] p-3 shadow-sm hover:border-white/20 transition-colors">
+              <p className="text-xs font-medium text-white/95">Launch spec</p>
               <div className="mt-2.5 h-1 w-14 rounded-full bg-zinc-800" />
             </div>
-            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
-              <p className="text-xs font-medium text-white/90">Org chart</p>
+            <div className="rounded-xl border border-white/[0.08] bg-[#141417] p-3 shadow-sm hover:border-white/20 transition-colors">
+              <p className="text-xs font-medium text-white/95">Org chart</p>
               <div className="mt-2.5 h-1 w-14 rounded-full bg-zinc-800" />
             </div>
           </div>
@@ -307,12 +316,12 @@ function BoardVisual() {
 
         {/* Column 3: DONE */}
         <div>
-          <h4 className="mb-3 font-mono text-[10px] font-semibold tracking-widest text-neutral-400">
+          <h4 className="mb-3 font-mono text-[10px] font-semibold tracking-widest text-zinc-400">
             DONE
           </h4>
           <div className="space-y-2.5">
-            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
-              <p className="text-xs font-medium text-white/90">Brand brief</p>
+            <div className="rounded-xl border border-white/[0.08] bg-[#141417] p-3 shadow-sm hover:border-white/20 transition-colors">
+              <p className="text-xs font-medium text-white/95">Brand brief</p>
               <div className="mt-2.5 h-1 w-14 rounded-full bg-zinc-800" />
             </div>
           </div>
@@ -320,27 +329,27 @@ function BoardVisual() {
       </div>
 
       {/* Live Cursor 1: Maya */}
-      <div className="pointer-events-none absolute left-[56%] top-[148px] z-20 flex items-center gap-0.5">
+      <div className="pointer-events-none absolute left-[56%] top-[162px] z-20 flex items-center gap-1 drop-shadow-lg">
         <svg
-          className="size-3.5 fill-current text-orange-500 drop-shadow"
+          className="size-3.5 fill-orange-500 text-orange-500 drop-shadow"
           viewBox="0 0 24 24"
         >
           <path d="M3 3l7 18 3-7 7-3L3 3z" />
         </svg>
-        <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-black shadow-md">
+        <span className="rounded-md bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-black shadow-md">
           Maya
         </span>
       </div>
 
       {/* Live Cursor 2: Dev */}
-      <div className="pointer-events-none absolute left-[77%] top-[208px] z-20 flex items-center gap-0.5">
+      <div className="pointer-events-none absolute left-[77%] top-[222px] z-20 flex items-center gap-1 drop-shadow-lg">
         <svg
-          className="size-3.5 fill-current text-orange-500 drop-shadow"
+          className="size-3.5 fill-orange-500 text-orange-500 drop-shadow"
           viewBox="0 0 24 24"
         >
           <path d="M3 3l7 18 3-7 7-3L3 3z" />
         </svg>
-        <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-black shadow-md">
+        <span className="rounded-md bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-black shadow-md">
           Dev
         </span>
       </div>
