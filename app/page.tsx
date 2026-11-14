@@ -20,7 +20,7 @@ function WindowFrame({
   return (
     <div
       aria-hidden="true"
-      className="relative w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0c0e] shadow-2xl transition-all hover:border-white/15"
+      className="relative w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0c0e] shadow-2xl transition-all hover:border-primary/40 hover:shadow-[0_0_35px_rgba(249,115,22,0.08)]"
     >
       {/* Title bar */}
       <div className="flex items-center justify-between border-b border-white/[0.08] bg-white/[0.02] px-5 py-3">
@@ -200,7 +200,7 @@ function BoardVisual() {
               {col.cards.map((card) => (
                 <div
                   key={card.title}
-                  className="relative rounded-xl border border-white/[0.08] bg-[#141417] p-2.5 shadow-sm transition-colors hover:border-white/20 sm:p-3"
+                  className="relative rounded-xl border border-white/[0.08] bg-[#141417] p-2.5 shadow-sm transition-all hover:border-primary/40 hover:bg-primary/[0.03] sm:p-3"
                 >
                   <p className="flex items-center gap-1 text-xs font-medium text-white/95">
                     {card.done && (
@@ -260,7 +260,7 @@ export default function Home() {
             {hero.subtitle}
           </p>
 
-          {/* CTAs (hover effects unchanged from original) */}
+          {/* CTAs */}
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href={hero.primaryCta.href}
@@ -270,7 +270,7 @@ export default function Home() {
             </Link>
             <Link
               href={hero.secondaryCta.href}
-              className="inline-flex h-12 items-center justify-center rounded-md border border-border bg-background/60 px-6 text-base font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="inline-flex h-12 items-center justify-center rounded-md border border-border bg-background/60 px-6 text-base font-medium text-foreground backdrop-blur-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_25px_rgba(249,115,22,0.25)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               {hero.secondaryCta.label}
             </Link>
