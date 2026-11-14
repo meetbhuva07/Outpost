@@ -50,20 +50,48 @@ export const SURFACES = [
   },
 ];
 
+/* ── How It Works (Waypoints Route) ─────────────────────────── */
+
+export const howItWorksSection = {
+  eyebrow: "HOW IT WORKS",
+  title: "From idea to live workspace in three steps",
+  subtitle:
+    "A continuous route from first thought to shared workspace. No diagramming syntax to memorize.",
+};
+
 export const STEPS = [
   {
-    title: "Describe what you need",
-    body: "Just say “Map out our onboarding flow.” Plain language, no diagramming syntax to learn. Or just talk: voice input works too.",
+    step: "01",
+    title: "Describe it",
+    description:
+      "Just say “Map out our onboarding flow.” Plain language, no diagramming syntax to learn. Or just talk: voice input works too.",
+    detail: "Natural language & voice input",
   },
   {
+    step: "02",
     title: "Watch the agent draw",
-    body: "Shapes appear one by one as the agent works, the same way a teammate would draw over a call.",
+    description:
+      "Shapes appear one by one as the agent works, the same way a teammate would draw over a call.",
+    detail: "Real-time shape-by-shape generation",
   },
   {
+    step: "03",
     title: "Keep iterating together",
-    body: "Ask for changes, pull it into a doc, or bring in your team. Same agent, same context.",
+    description:
+      "Ask for changes, pull it into a doc, or bring in your team. Same agent, same context.",
+    detail: "Live collaborative workspace",
   },
 ];
+
+/* ── Pricing (Placeholder) ──────────────────────────────────── */
+
+export const pricingSection = {
+  eyebrow: "PRICING",
+  titleLine1: "Start free, upgrade",
+  titleLine2: "when it clicks",
+  subtitle: "Upgrade just yourself or your whole team. Billed per member.",
+  placeholder: "PLAN CARDS COMING SOON",
+};
 
 /* ── Hero & Workspace section ─────────────────────────────────── */
 
@@ -93,3 +121,13 @@ export const workspaceSection = {
   titleLine1: "One agent, one workspace,",
   titleLine2: "your whole team",
 } as const;
+
+export const closingCta = {
+  eyebrow: "READY TO BUILD?",
+  headline: "Set up your outpost today",
+  subtitle:
+    "Bring your whole team into one shared workspace where your agent diagrams, writes, and tracks work alongside you.",
+  primaryCta: { label: "Start building free", href: "/sign-up" },
+  secondaryCta: { label: "See how it works", href: "#how-it-works" },
+  mascot: "/brand/mascot-dark.png",
+};

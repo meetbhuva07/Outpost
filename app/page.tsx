@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Check } from "lucide-react";
 import type { ReactNode } from "react";
 import {
@@ -6,6 +7,10 @@ import {
   AUDIENCES,
   workspaceSection,
   SURFACES,
+  STEPS,
+  howItWorksSection,
+  pricingSection,
+  closingCta,
 } from "@/app/_data/landing";
 
 /* ── macOS window frame (bar + body in one component) ───────────────── */
@@ -410,6 +415,176 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── How It Works (Waypoints Route) ───────────────────── */}
+      <section
+        id="how-it-works"
+        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/[0.08] py-24 sm:py-32"
+      >
+        {/* Subtle ambient amber flare */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute left-1/2 top-1/2 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,oklch(0.74_0.16_55/0.10),transparent_70%)] blur-3xl" />
+        </div>
+
+        <div className="mx-auto max-w-6xl px-6 sm:px-10">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="flex items-center justify-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400">
+              <span aria-hidden="true" className="text-[10px] text-orange-500">◆</span>
+              <span>{howItWorksSection.eyebrow}</span>
+            </p>
+            <h2 className="mt-4 text-balance text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+              {howItWorksSection.title}
+            </h2>
+            <p className="mt-4 text-pretty text-base leading-relaxed text-neutral-400">
+              {howItWorksSection.subtitle}
+            </p>
+          </div>
+
+          {/* Waypoints Route Grid */}
+          <div className="relative mt-20">
+            {/* Desktop continuous dashed route line connecting waypoints */}
+            <div
+              aria-hidden="true"
+              className="absolute left-[16%] right-[16%] top-7 hidden h-0.5 border-t-2 border-dashed border-orange-500/30 lg:block"
+            />
+
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-6">
+              {STEPS.map((step, idx) => (
+                <div
+                  key={step.title}
+                  className="group relative flex flex-col rounded-2xl border border-white/[0.08] bg-[#0c0c0e] p-7 shadow-xl transition-all hover:border-primary/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.12)]"
+                >
+                  {/* Waypoint Marker */}
+                  <div className="mb-6 flex items-center justify-between">
+                    <div className="relative z-10 flex size-14 items-center justify-center rounded-2xl border border-orange-500/40 bg-[#16120e] font-mono text-base font-bold text-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.2)] transition-transform group-hover:scale-105">
+                      {step.step}
+                      <span className="absolute -right-1 -top-1 size-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,1)]" />
+                    </div>
+                    <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[10px] text-zinc-400">
+                      WAYPOINT 0{idx + 1}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold tracking-tight text-white">
+                    {step.title}
+                  </h3>
+
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-neutral-400">
+                    {step.description}
+                  </p>
+
+                  <div className="mt-6 flex items-center gap-2 border-t border-white/[0.06] pt-4 font-mono text-xs text-orange-500/80">
+                    <span className="size-1.5 rounded-full bg-orange-500" />
+                    <span>{step.detail}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Pricing (Placeholder) ──────────────────────────────── */}
+      <section
+        id="pricing"
+        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/[0.08] py-24 sm:py-32"
+      >
+        <div className="mx-auto max-w-5xl px-6 sm:px-10">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="flex items-center justify-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400">
+              <span aria-hidden="true" className="text-[10px] text-orange-500">◆</span>
+              <span>{pricingSection.eyebrow}</span>
+            </p>
+            <h2 className="mt-4 text-balance text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <span className="block">{pricingSection.titleLine1}</span>
+              <span className="block">{pricingSection.titleLine2}</span>
+            </h2>
+            <p className="mt-4 text-pretty text-base leading-relaxed text-neutral-400">
+              {pricingSection.subtitle}
+            </p>
+          </div>
+
+          {/* Placeholder Box */}
+          <div className="mx-auto mt-14 flex h-64 sm:h-80 w-full max-w-4xl items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.01]">
+            <p className="font-mono text-xs font-medium tracking-[0.25em] text-zinc-500">
+              {pricingSection.placeholder}
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Closing CTA (on topo-bg with Mascot) ──────────────── */}
+      <section className="topo-bg relative w-full overflow-hidden border-t border-border py-24 sm:py-32">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center px-6 text-center sm:px-10">
+          {/* Mascot */}
+          <div className="relative mb-8">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.3),transparent_70%)] blur-2xl"
+            />
+            <Image
+              src={closingCta.mascot}
+              alt="Outpost Mascot"
+              width={200}
+              height={200}
+              className="mx-auto size-36 object-contain drop-shadow-[0_15px_30px_rgba(249,115,22,0.25)] sm:size-44"
+            />
+          </div>
+
+          <p className="flex items-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400">
+            <span aria-hidden="true" className="text-[10px] text-orange-500">◆</span>
+            <span>{closingCta.eyebrow}</span>
+          </p>
+
+          <h2 className="mx-auto mt-4 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            {closingCta.headline}
+          </h2>
+
+          <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {closingCta.subtitle}
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href={closingCta.primaryCta.href}
+              className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-8 text-base font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_25px_rgba(249,115,22,0.3)]"
+            >
+              {closingCta.primaryCta.label}
+            </Link>
+            <Link
+              href={closingCta.secondaryCta.href}
+              className="inline-flex h-12 items-center justify-center rounded-md border border-border bg-background/60 px-8 text-base font-medium text-foreground backdrop-blur-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
+            >
+              {closingCta.secondaryCta.label}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Footer ───────────────────────────────────────────── */}
+      <footer className="border-t border-white/[0.08] bg-[#09090b] py-12">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 sm:flex-row sm:px-10">
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/brand/logo-navbar-dark.png"
+              alt="OutPost"
+              width={160}
+              height={40}
+              className="h-7 w-auto"
+            />
+          </Link>
+
+          <p className="font-mono text-sm text-neutral-400">
+            made with <span className="text-red-500">❤️</span> by{" "}
+            <span className="font-semibold text-white">Meet Bhuva</span>
+          </p>
+
+          <p className="font-mono text-xs text-zinc-500">
+            © {new Date().getFullYear()} Outpost. All rights reserved.
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }
