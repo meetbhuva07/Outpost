@@ -71,23 +71,23 @@ function CanvasVisual() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <marker id="flow-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <marker id="canvas-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M 0 1.5 L 6 4 L 0 6.5 z" fill="#71717a" />
           </marker>
-          <marker id="flow-arrow-accent" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <marker id="canvas-arrow-accent" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M 0 1.5 L 6 4 L 0 6.5 z" fill={accent} />
           </marker>
-          <filter id="amber-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <filter id="canvas-glow" x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor={accent} floodOpacity="0.35" />
           </filter>
         </defs>
 
         {/* Request */}
-        <rect x="135" y="6" width="110" height="34" rx="17" fill="#18130e" stroke={accent} strokeWidth="1.4" filter="url(#amber-glow)" />
+        <rect x="135" y="6" width="110" height="34" rx="17" fill="#18130e" stroke={accent} strokeWidth="1.4" filter="url(#canvas-glow)" />
         <text x="190" y="28" textAnchor="middle" fill="#fff" fontSize="12" fontFamily="monospace">
           Request
         </text>
-        <line x1="190" y1="40" x2="190" y2="66" stroke={line} strokeWidth="1.2" markerEnd="url(#flow-arrow)" />
+        <line x1="190" y1="40" x2="190" y2="66" stroke={line} strokeWidth="1.2" markerEnd="url(#canvas-arrow)" />
 
         {/* Decision */}
         <polygon points="190,68 238,91 190,114 142,91" fill="#141417" stroke="rgba(255,255,255,0.16)" strokeWidth="1.2" />
@@ -108,8 +108,8 @@ function CanvasVisual() {
           no
         </text>
 
-        <line x1="85" y1="138" x2="85" y2="158" stroke={accent} strokeWidth="1.4" markerEnd="url(#flow-arrow-accent)" />
-        <line x1="295" y1="138" x2="295" y2="158" stroke={line} strokeWidth="1.2" markerEnd="url(#flow-arrow)" />
+        <line x1="85" y1="138" x2="85" y2="158" stroke={accent} strokeWidth="1.4" markerEnd="url(#canvas-arrow-accent)" />
+        <line x1="295" y1="138" x2="295" y2="158" stroke={line} strokeWidth="1.2" markerEnd="url(#canvas-arrow)" />
 
         {/* Outcomes */}
         <rect x="25" y="160" width="120" height="38" rx="8" fill="#1a120b" stroke="rgba(234,88,12,0.5)" strokeWidth="1.2" />
@@ -163,7 +163,7 @@ function DocsVisual() {
   );
 }
 
-type BoardCard = { title: string; width: string; cursor?: string };
+type BoardCard = { title: string; width: string; cursor?: string; done?: boolean };
 
 const BOARD: { name: string; cards: BoardCard[] }[] = [
   {
@@ -183,7 +183,7 @@ const BOARD: { name: string; cards: BoardCard[] }[] = [
   },
   {
     name: "DONE",
-    cards: [{ title: "Brand brief", width: "w-14" }],
+    cards: [{ title: "Brand brief", width: "w-14", done: true }],
   },
 ];
 
@@ -200,9 +200,14 @@ function BoardVisual() {
               {col.cards.map((card) => (
                 <div
                   key={card.title}
-                  className="relative rounded-xl border border-white/[0.08] bg-[#141417] p-3 shadow-sm transition-colors hover:border-white/20"
+                  className="relative rounded-xl border border-white/[0.08] bg-[#141417] p-2.5 shadow-sm transition-colors hover:border-white/20 sm:p-3"
                 >
-                  <p className="truncate text-xs font-medium text-white/95">{card.title}</p>
+                  <p className="flex items-center gap-1 text-xs font-medium text-white/95">
+                    {card.done && (
+                      <Check aria-hidden="true" className="size-3 shrink-0 stroke-[2.5] text-orange-500" />
+                    )}
+                    <span className="truncate">{card.title}</span>
+                  </p>
                   <div className={`mt-2.5 h-1 rounded-full bg-zinc-800 ${card.width}`} />
 
                   {/* Anchored to its card, so it never drifts when the layout changes */}
@@ -219,17 +224,11 @@ function BoardVisual() {
   );
 }
 
-function getSurfaceVisual(id: string) {
-  switch (id) {
-    case "canvas":
-      return <CanvasVisual />;
-    case "docs":
-      return <DocsVisual />;
-    case "team-board":
-    default:
-      return <BoardVisual />;
-  }
-}
+const SURFACE_VISUALS: Record<string, ReactNode> = {
+  canvas: <CanvasVisual />,
+  docs: <DocsVisual />,
+  "team-board": <BoardVisual />,
+};
 
 /* ── Main Landing Page ──────────────────────────────────────────────── */
 
@@ -367,7 +366,7 @@ export default function Home() {
                     </ul>
                   </div>
 
-                  <div className="w-full flex-1 lg:max-w-xl">{getSurfaceVisual(surface.id)}</div>
+                  <div className="w-full flex-1 lg:max-w-xl">{SURFACE_VISUALS[surface.id] ?? <BoardVisual />}</div>
                 </article>
               );
             })}
