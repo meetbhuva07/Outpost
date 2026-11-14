@@ -1,60 +1,366 @@
 import Link from "next/link";
-import { Check, PenTool, FileText } from "lucide-react";
+import { Check } from "lucide-react";
 import {
   hero,
-  audiences,
+  AUDIENCES,
   workspaceSection,
-  features,
+  SURFACES,
 } from "@/app/_data/landing";
-import {
-  CanvasMock,
-  DocsMock,
-  KanbanMock,
-} from "@/app/_components/mocks/feature-mocks";
 
-function BoardIcon() {
+/* ── Inline Surface Visuals (built directly with Tailwind CSS) ──────── */
+
+function CanvasVisual() {
   return (
-    <svg
-      className="size-5 text-orange-500"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect width="18" height="18" x="3" y="3" rx="3" />
-      <path d="M8 7v10" />
-      <path d="M12 7v7" />
-      <path d="M16 7v4" />
-    </svg>
+    <div className="w-full rounded-2xl border border-white/10 bg-[#0c0c0e] p-6 shadow-2xl transition-all">
+      {/* Window Controls */}
+      <div className="mb-4 flex items-center gap-1.5" aria-hidden="true">
+        <span className="size-2 rounded-full bg-white/15" />
+        <span className="size-2 rounded-full bg-white/15" />
+        <span className="size-2 rounded-full bg-white/15" />
+      </div>
+
+      {/* Whiteboard Flowchart Mock */}
+      <div className="flex items-center justify-center py-2">
+        <svg
+          viewBox="0 0 380 220"
+          className="h-auto w-full select-none"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <marker
+              id="flow-arrow"
+              viewBox="0 0 8 8"
+              refX="6"
+              refY="4"
+              markerWidth="6"
+              markerHeight="6"
+              orient="auto-start-reverse"
+            >
+              <path d="M 0 1.5 L 6 4 L 0 6.5 z" fill="#71717a" />
+            </marker>
+          </defs>
+
+          {/* 1. Request Pill */}
+          <rect
+            x="135"
+            y="6"
+            width="110"
+            height="34"
+            rx="17"
+            fill="#18130e"
+            stroke="#ea580c"
+            strokeWidth="1.2"
+          />
+          <text
+            x="190"
+            y="28"
+            textAnchor="middle"
+            fill="#ffffff"
+            fontSize="12"
+            fontFamily="monospace"
+            letterSpacing="0.02em"
+          >
+            Request
+          </text>
+
+          {/* Arrow: Request -> Authed? */}
+          <line
+            x1="190"
+            y1="40"
+            x2="190"
+            y2="66"
+            stroke="#52525b"
+            strokeWidth="1.2"
+            markerEnd="url(#flow-arrow)"
+          />
+
+          {/* 2. Authed? Diamond */}
+          <polygon
+            points="190,68 238,91 190,114 142,91"
+            fill="#141417"
+            stroke="rgba(255,255,255,0.14)"
+            strokeWidth="1.2"
+          />
+          <text
+            x="190"
+            y="95"
+            textAnchor="middle"
+            fill="#ffffff"
+            fontSize="11"
+            fontFamily="monospace"
+          >
+            Authed?
+          </text>
+
+          {/* Vertical stem from diamond */}
+          <line
+            x1="190"
+            y1="114"
+            x2="190"
+            y2="138"
+            stroke="#52525b"
+            strokeWidth="1.2"
+          />
+
+          {/* Horizontal T-bar */}
+          <line
+            x1="85"
+            y1="138"
+            x2="295"
+            y2="138"
+            stroke="#52525b"
+            strokeWidth="1.2"
+          />
+
+          {/* Branch labels */}
+          <text
+            x="135"
+            y="128"
+            textAnchor="middle"
+            fill="#a1a1aa"
+            fontSize="11"
+            fontFamily="monospace"
+          >
+            yes
+          </text>
+          <text
+            x="245"
+            y="128"
+            textAnchor="middle"
+            fill="#a1a1aa"
+            fontSize="11"
+            fontFamily="monospace"
+          >
+            no
+          </text>
+
+          {/* Left drop line with arrow */}
+          <line
+            x1="85"
+            y1="138"
+            x2="85"
+            y2="158"
+            stroke="#52525b"
+            strokeWidth="1.2"
+            markerEnd="url(#flow-arrow)"
+          />
+
+          {/* Right drop line with arrow */}
+          <line
+            x1="295"
+            y1="138"
+            x2="295"
+            y2="158"
+            stroke="#52525b"
+            strokeWidth="1.2"
+            markerEnd="url(#flow-arrow)"
+          />
+
+          {/* 3. Left Box: Load workspace */}
+          <rect
+            x="25"
+            y="160"
+            width="120"
+            height="38"
+            rx="8"
+            fill="#141417"
+            stroke="rgba(255,255,255,0.12)"
+            strokeWidth="1.2"
+          />
+          <text
+            x="85"
+            y="184"
+            textAnchor="middle"
+            fill="#ffffff"
+            fontSize="11"
+            fontFamily="monospace"
+          >
+            Load workspace
+          </text>
+
+          {/* 4. Right Box: Redirect to sign in */}
+          <rect
+            x="222"
+            y="160"
+            width="146"
+            height="38"
+            rx="8"
+            fill="#141417"
+            stroke="rgba(255,255,255,0.12)"
+            strokeWidth="1.2"
+          />
+          <text
+            x="295"
+            y="184"
+            textAnchor="middle"
+            fill="#ffffff"
+            fontSize="11"
+            fontFamily="monospace"
+          >
+            Redirect to sign in
+          </text>
+        </svg>
+      </div>
+    </div>
   );
 }
 
-function getFeatureIcon(id: string) {
+function DocsVisual() {
+  return (
+    <div className="w-full rounded-2xl border border-white/10 bg-[#0c0c0e] p-6 shadow-2xl">
+      {/* Window Controls */}
+      <div className="mb-6 flex items-center gap-1.5" aria-hidden="true">
+        <span className="size-2 rounded-full bg-white/15" />
+        <span className="size-2 rounded-full bg-white/15" />
+        <span className="size-2 rounded-full bg-white/15" />
+      </div>
+
+      {/* Doc Mock */}
+      <div className="space-y-4 py-1">
+        {/* H1 Heading Skeleton */}
+        <div className="h-5 w-52 rounded-sm bg-zinc-300 sm:w-60" />
+
+        {/* Paragraph Skeleton */}
+        <div className="space-y-2 pt-1">
+          <div className="h-1.5 w-full rounded-sm bg-zinc-800" />
+          <div className="h-1.5 w-5/6 rounded-sm bg-zinc-800" />
+          <div className="h-1.5 w-4/6 rounded-sm bg-zinc-800" />
+        </div>
+
+        {/* H2 Heading Skeleton */}
+        <div className="pt-2">
+          <div className="h-3.5 w-32 rounded-sm bg-zinc-500" />
+        </div>
+
+        {/* Agent Summary Callout */}
+        <div className="rounded-lg border border-amber-600/40 bg-[#1a120b] p-3.5 shadow-sm">
+          <div className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-orange-400">
+            <span className="text-[8px]">◆</span>
+            <span>AGENT SUMMARY</span>
+          </div>
+          <div className="mt-2.5 space-y-1.5">
+            <div className="h-1.5 w-11/12 rounded-sm bg-orange-700/50" />
+            <div className="h-1.5 w-3/4 rounded-sm bg-orange-700/40" />
+          </div>
+        </div>
+
+        {/* Bottom Paragraph Skeleton */}
+        <div className="space-y-2 pt-1">
+          <div className="h-1.5 w-full rounded-sm bg-zinc-800" />
+          <div className="h-1.5 w-2/3 rounded-sm bg-zinc-800" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BoardVisual() {
+  return (
+    <div className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0e] p-5 shadow-2xl">
+      {/* Window Controls */}
+      <div className="mb-6 flex items-center gap-1.5" aria-hidden="true">
+        <span className="size-2 rounded-full bg-white/15" />
+        <span className="size-2 rounded-full bg-white/15" />
+        <span className="size-2 rounded-full bg-white/15" />
+      </div>
+
+      {/* 3 Columns Grid */}
+      <div className="grid grid-cols-3 gap-2.5 py-1 sm:gap-3">
+        {/* Column 1: PLANNING */}
+        <div>
+          <h4 className="mb-3 font-mono text-[10px] font-semibold tracking-widest text-neutral-400">
+            PLANNING
+          </h4>
+          <div className="space-y-2.5">
+            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
+              <p className="text-xs font-medium text-white/90">Onboarding flow</p>
+              <div className="mt-2.5 h-1 w-12 rounded-full bg-zinc-800" />
+            </div>
+            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
+              <p className="text-xs font-medium text-white/90">Billing ERD</p>
+              <div className="mt-2.5 h-1 w-12 rounded-full bg-zinc-800" />
+            </div>
+          </div>
+        </div>
+
+        {/* Column 2: IN PROGRESS */}
+        <div>
+          <h4 className="mb-3 font-mono text-[10px] font-semibold tracking-widest text-neutral-400">
+            IN PROGRESS
+          </h4>
+          <div className="space-y-2.5">
+            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
+              <p className="text-xs font-medium text-white/90">API architecture</p>
+              <div className="mt-2.5 h-1 w-14 rounded-full bg-zinc-800" />
+            </div>
+            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
+              <p className="text-xs font-medium text-white/90">Launch spec</p>
+              <div className="mt-2.5 h-1 w-14 rounded-full bg-zinc-800" />
+            </div>
+            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
+              <p className="text-xs font-medium text-white/90">Org chart</p>
+              <div className="mt-2.5 h-1 w-14 rounded-full bg-zinc-800" />
+            </div>
+          </div>
+        </div>
+
+        {/* Column 3: DONE */}
+        <div>
+          <h4 className="mb-3 font-mono text-[10px] font-semibold tracking-widest text-neutral-400">
+            DONE
+          </h4>
+          <div className="space-y-2.5">
+            <div className="rounded-xl border border-white/10 bg-[#141417] p-3 shadow-sm">
+              <p className="text-xs font-medium text-white/90">Brand brief</p>
+              <div className="mt-2.5 h-1 w-14 rounded-full bg-zinc-800" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Live Cursor 1: Maya */}
+      <div className="pointer-events-none absolute left-[56%] top-[148px] z-20 flex items-center gap-0.5">
+        <svg
+          className="size-3.5 fill-current text-orange-500 drop-shadow"
+          viewBox="0 0 24 24"
+        >
+          <path d="M3 3l7 18 3-7 7-3L3 3z" />
+        </svg>
+        <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-black shadow-md">
+          Maya
+        </span>
+      </div>
+
+      {/* Live Cursor 2: Dev */}
+      <div className="pointer-events-none absolute left-[77%] top-[208px] z-20 flex items-center gap-0.5">
+        <svg
+          className="size-3.5 fill-current text-orange-500 drop-shadow"
+          viewBox="0 0 24 24"
+        >
+          <path d="M3 3l7 18 3-7 7-3L3 3z" />
+        </svg>
+        <span className="rounded bg-orange-500 px-1.5 py-0.5 text-[9px] font-bold text-black shadow-md">
+          Dev
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function getSurfaceVisual(id: string) {
   switch (id) {
     case "canvas":
-      return <PenTool className="size-5 text-orange-500 stroke-[1.8]" />;
+      return <CanvasVisual />;
     case "docs":
-      return <FileText className="size-5 text-orange-500 stroke-[1.8]" />;
+      return <DocsVisual />;
     case "team-board":
     default:
-      return <BoardIcon />;
+      return <BoardVisual />;
   }
 }
 
-function getFeatureMock(id: string) {
-  switch (id) {
-    case "canvas":
-      return <CanvasMock />;
-    case "docs":
-      return <DocsMock />;
-    case "team-board":
-    default:
-      return <KanbanMock />;
-  }
-}
+/* ── Main Landing Page ──────────────────────────────────────────────── */
 
 export default function Home() {
   return (
@@ -131,13 +437,13 @@ export default function Home() {
           <span className="text-xs font-mono uppercase tracking-widest text-muted-foreground">
             Built for
           </span>
-          {audiences.map((audience, i) => (
+          {AUDIENCES.map((audience, i) => (
             <span
               key={audience}
               className="flex items-center gap-3 text-sm text-foreground/80"
             >
               {audience}
-              {i < audiences.length - 1 && (
+              {i < AUDIENCES.length - 1 && (
                 <span
                   aria-hidden="true"
                   className="inline-block size-1 rotate-45 bg-primary/40"
@@ -173,12 +479,13 @@ export default function Home() {
 
           {/* Feature Rows */}
           <div className="mt-24 space-y-28 lg:mt-32 lg:space-y-36">
-            {features.map((feature, idx) => {
+            {SURFACES.map((surface, idx) => {
               const isReversed = idx % 2 !== 0; // Row 2 (Docs) has Mock on Left, Copy on Right
+              const Icon = surface.icon;
 
               return (
                 <div
-                  key={feature.id}
+                  key={surface.title}
                   className={`flex flex-col items-center gap-12 lg:flex-row lg:gap-16 xl:gap-20 ${
                     isReversed ? "lg:flex-row-reverse" : ""
                   }`}
@@ -187,22 +494,22 @@ export default function Home() {
                   <div className="w-full flex-1 lg:max-w-md">
                     {/* Icon container */}
                     <div className="flex size-11 items-center justify-center rounded-xl border border-orange-500/30 bg-[#1a120c] shadow-[0_0_15px_rgba(249,115,22,0.08)]">
-                      {getFeatureIcon(feature.id)}
+                      <Icon className="size-5 text-orange-500 stroke-[1.8]" />
                     </div>
 
                     {/* Title */}
                     <h3 className="mt-5 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                      {feature.title}
+                      {surface.title}
                     </h3>
 
                     {/* Description */}
                     <p className="mt-3.5 text-sm leading-relaxed text-neutral-400">
-                      {feature.description}
+                      {surface.description}
                     </p>
 
                     {/* Bullets with Checkmarks */}
                     <ul className="mt-6 space-y-3">
-                      {feature.bullets.map((bullet) => (
+                      {surface.bullets.map((bullet) => (
                         <li
                           key={bullet}
                           className="flex items-center gap-3 text-sm text-neutral-300"
@@ -216,7 +523,7 @@ export default function Home() {
 
                   {/* Mock Side */}
                   <div className="w-full flex-1 lg:max-w-xl">
-                    {getFeatureMock(feature.id)}
+                    {getSurfaceVisual(surface.id)}
                   </div>
                 </div>
               );
