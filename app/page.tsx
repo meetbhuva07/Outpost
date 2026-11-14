@@ -277,7 +277,12 @@ export default function Home() {
           </div>
 
           {/* Product video */}
-          <div className="survey-frame scroll-tilt mt-16 w-full max-w-5xl sm:mt-20">
+          <div className="survey-frame scroll-tilt relative mt-16 w-full max-w-5xl sm:mt-20">
+            {/* Ambient backlight glow */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-4 -z-10 rounded-2xl bg-[radial-gradient(ellipse_at_center,oklch(0.74_0.16_55/0.25),transparent_70%)] blur-2xl"
+            />
             <div className="overflow-hidden rounded-xl border border-border bg-muted">
               <video
                 className="block aspect-video w-full object-cover"
@@ -298,7 +303,9 @@ export default function Home() {
       </section>
 
       {/* ── Audience Strip ───────────────────────────────────── */}
-      <section aria-label="Who it's for" className="border-y border-border bg-muted/20">
+      <section aria-label="Who it's for" className="relative border-y border-border bg-muted/20">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-6 py-5 sm:py-6">
           <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             Built for
@@ -318,6 +325,29 @@ export default function Home() {
 
       {/* ── Features: The Workspace ──────────────────────────── */}
       <section id="product" className="relative w-full scroll-mt-16 overflow-hidden py-24 sm:py-32">
+        {/* Top subtle amber beam */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+
+        {/* Ambient background glows with amber tint */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          {/* Subtle amber dot grid with radial fade */}
+          <div
+            className="absolute inset-0 opacity-[0.06]"
+            style={{
+              backgroundImage: "radial-gradient(circle, oklch(0.74 0.16 55) 1px, transparent 1px)",
+              backgroundSize: "28px 28px",
+              maskImage: "radial-gradient(ellipse 70% 50% at 50% 30%, black 20%, transparent 80%)",
+            }}
+          />
+
+          {/* Top center ambient glow */}
+          <div className="absolute left-1/2 top-0 h-[500px] w-[900px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-[radial-gradient(ellipse_at_center,oklch(0.74_0.16_55/0.16),transparent_70%)] blur-3xl" />
+
+          {/* Side amber auras along the features */}
+          <div className="absolute -left-48 top-1/3 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.08),transparent_70%)] blur-3xl" />
+          <div className="absolute -right-48 top-2/3 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.08),transparent_70%)] blur-3xl" />
+        </div>
+
         <div className="mx-auto max-w-6xl px-6 sm:px-10">
           <div className="mx-auto max-w-4xl text-center">
             <p className="flex items-center justify-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400">
@@ -366,7 +396,14 @@ export default function Home() {
                     </ul>
                   </div>
 
-                  <div className="w-full flex-1 lg:max-w-xl">{SURFACE_VISUALS[surface.id] ?? <BoardVisual />}</div>
+                  {/* Mock wrapper with ambient amber backlight */}
+                  <div className="group relative w-full flex-1 lg:max-w-xl">
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -inset-3 -z-10 rounded-3xl bg-gradient-to-tr from-primary/20 via-primary/5 to-transparent opacity-60 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+                    />
+                    {SURFACE_VISUALS[surface.id] ?? <BoardVisual />}
+                  </div>
                 </article>
               );
             })}
