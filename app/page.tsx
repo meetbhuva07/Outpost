@@ -49,10 +49,10 @@ function WindowFrame({
   return (
     <div
       aria-hidden="true"
-      className="relative w-full overflow-hidden rounded-2xl border border-white/8 bg-[#0c0c0e] shadow-2xl transition-all hover:border-primary/40 hover:shadow-[0_0_35px_rgba(249,115,22,0.08)]"
+      className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0e] shadow-2xl transition-all hover:border-primary/40 hover:shadow-[0_0_35px_rgba(249,115,22,0.08)]"
     >
       {/* Title bar */}
-      <div className="flex items-center border-b border-white/8 bg-white/2 px-5 py-3">
+      <div className="flex items-center border-b border-white/10 bg-white/5 px-5 py-3">
         <div className="flex flex-1 items-center gap-2">
           <span className="size-2.5 rounded-full bg-[#ff5f56] ring-1 ring-black/20 shadow-sm" />
           <span className="size-2.5 rounded-full bg-[#ffbd2e] ring-1 ring-black/20 shadow-sm" />
@@ -185,7 +185,7 @@ function DocsVisual() {
         </div>
 
         {/* Agent summary callout: the collaborator, with its own cursor */}
-        <div className="relative rounded-xl border border-amber-500/40 bg-gradient-to-r from-amber-950/40 to-amber-900/10 p-4 shadow-sm backdrop-blur-sm">
+        <div className="relative rounded-xl border border-amber-500/40 bg-linear-to-r from-amber-950/40 to-amber-900/10 p-4 shadow-sm backdrop-blur-sm">
           <div className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-amber-400">
             <span className="text-[9px] text-amber-500">◆</span>
             <span>AGENT SUMMARY</span>
@@ -246,9 +246,9 @@ function BoardVisual() {
               {col.cards.map((card) => (
                 <div
                   key={card.title}
-                  className="relative rounded-xl border border-white/8 bg-[#141417] p-2.5 shadow-sm transition-all hover:border-primary/40 hover:bg-primary/3 sm:p-3"
+                  className="relative rounded-xl border border-white/10 bg-[#141417] p-2.5 shadow-sm transition-all hover:border-primary/40 hover:bg-primary/5 sm:p-3"
                 >
-                  <p className="flex items-center gap-1 text-xs font-medium text-white/95">
+                  <p className="flex items-center gap-1 text-xs font-medium text-white">
                     {card.done && (
                       <Check aria-hidden="true" className="size-3 shrink-0 stroke-[2.5] text-orange-500" />
                     )}
@@ -270,11 +270,18 @@ function BoardVisual() {
   );
 }
 
-const SURFACE_VISUALS: Record<string, ReactNode> = {
-  canvas: <CanvasVisual />,
-  docs: <DocsVisual />,
-  "team-board": <BoardVisual />,
-};
+function SurfaceVisual({ id }: { id: string }) {
+  switch (id) {
+    case "canvas":
+      return <CanvasVisual />;
+    case "docs":
+      return <DocsVisual />;
+    case "team-board":
+      return <BoardVisual />;
+    default:
+      return <BoardVisual />;
+  }
+}
 
 /* ── Main Landing Page ──────────────────────────────────────────────── */
 
@@ -372,7 +379,7 @@ export default function Home() {
       {/* ── Features: The Workspace ──────────────────────────── */}
       <section id="product" className="relative w-full scroll-mt-16 overflow-hidden py-24 sm:py-32">
         {/* Top subtle amber beam */}
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent" />
 
         {/* Ambient background glows with amber tint */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -387,11 +394,11 @@ export default function Home() {
           />
 
           {/* Top center ambient glow */}
-          <div className="absolute left-1/2 top-0 h-[500px] w-[900px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-[radial-gradient(ellipse_at_center,oklch(0.74_0.16_55/0.16),transparent_70%)] blur-3xl" />
+          <div className="absolute left-1/2 top-0 h-125 w-225 -translate-x-1/2 -translate-y-1/3 rounded-full bg-[radial-gradient(ellipse_at_center,oklch(0.74_0.16_55/0.16),transparent_70%)] blur-3xl" />
 
           {/* Side amber auras along the features */}
-          <div className="absolute -left-48 top-1/3 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.08),transparent_70%)] blur-3xl" />
-          <div className="absolute -right-48 top-2/3 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.08),transparent_70%)] blur-3xl" />
+          <div className="absolute -left-48 top-1/3 h-125 w-125 rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.08),transparent_70%)] blur-3xl" />
+          <div className="absolute -right-48 top-2/3 h-125 w-125 rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.08),transparent_70%)] blur-3xl" />
         </div>
 
         <div className="mx-auto max-w-6xl px-6 sm:px-10">
@@ -449,9 +456,9 @@ export default function Home() {
                   <div className="group relative w-full flex-1 lg:max-w-xl">
                     <div
                       aria-hidden="true"
-                      className="pointer-events-none absolute -inset-3 -z-10 rounded-3xl bg-gradient-to-tr from-primary/20 via-primary/5 to-transparent opacity-60 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+                      className="pointer-events-none absolute -inset-3 -z-10 rounded-3xl bg-linear-to-tr from-primary/20 via-primary/5 to-transparent opacity-60 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
                     />
-                    {SURFACE_VISUALS[surface.id] ?? <BoardVisual />}
+                    <SurfaceVisual id={surface.id} />
                   </div>
                 </article>
               );
@@ -463,11 +470,11 @@ export default function Home() {
       {/* ── How It Works (Waypoints Route) ───────────────────── */}
       <section
         id="how-it-works"
-        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/8 py-24 sm:py-32"
+        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/10 py-24 sm:py-32"
       >
         {/* Subtle ambient amber flare */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute left-1/2 top-1/2 h-[500px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,oklch(0.74_0.16_55/0.10),transparent_70%)] blur-3xl" />
+          <div className="absolute left-1/2 top-1/2 h-125 w-200 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,oklch(0.74_0.16_55/0.10),transparent_70%)] blur-3xl" />
         </div>
 
         <div className="mx-auto max-w-6xl px-6 sm:px-10">
@@ -496,7 +503,7 @@ export default function Home() {
               {STEPS.map((step, idx) => (
                 <div
                   key={step.title}
-                  className="group relative flex flex-col rounded-2xl border border-white/[0.08] bg-[#0c0c0e] p-7 shadow-xl transition-all hover:border-primary/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.12)]"
+                  className="group relative flex flex-col rounded-2xl border border-white/8 bg-[#0c0c0e] p-7 shadow-xl transition-all hover:border-primary/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.12)]"
                 >
                   {/* Waypoint Marker */}
                   <div className="mb-6 flex items-center justify-between">
@@ -504,7 +511,7 @@ export default function Home() {
                       {step.step}
                       <span className="absolute -right-1 -top-1 size-2 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,1)]" />
                     </div>
-                    <span className="rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 font-mono text-[10px] text-zinc-400">
+                    <span className="rounded-full border border-white/10 bg-white/3 px-2.5 py-1 font-mono text-[10px] text-zinc-400">
                       WAYPOINT 0{idx + 1}
                     </span>
                   </div>
@@ -517,7 +524,7 @@ export default function Home() {
                     {step.description}
                   </p>
 
-                  <div className="mt-6 flex items-center gap-2 border-t border-white/[0.06] pt-4 font-mono text-xs text-orange-500/80">
+                  <div className="mt-6 flex items-center gap-2 border-t border-white/6 pt-4 font-mono text-xs text-orange-500/80">
                     <span className="size-1.5 rounded-full bg-orange-500" />
                     <span>{step.detail}</span>
                   </div>
@@ -531,7 +538,7 @@ export default function Home() {
       {/* ── Pricing (Placeholder) ──────────────────────────────── */}
       <section
         id="pricing"
-        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/[0.08] bg-black py-24 sm:py-32"
+        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/8 bg-black py-24 sm:py-32"
       >
         <div className="mx-auto max-w-5xl px-6 sm:px-10">
           <div className="mx-auto max-w-3xl text-center">
@@ -549,7 +556,7 @@ export default function Home() {
           </div>
 
           {/* Placeholder Box */}
-          <div className="mx-auto mt-14 flex h-64 sm:h-80 w-full max-w-4xl items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.01]">
+          <div className="mx-auto mt-14 flex h-64 sm:h-80 w-full max-w-4xl items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/1">
             <p className="font-mono text-xs font-medium tracking-[0.25em] text-zinc-500 uppercase">
               {pricingSection.placeholder}
             </p>
@@ -597,7 +604,7 @@ export default function Home() {
               {/* slow-rotating dashed route ring */}
               <div
                 aria-hidden="true"
-                className="absolute inset-0 rounded-full border border-dashed border-orange-500/50 motion-safe:animate-spin [animation-duration:40s]"
+                className="absolute inset-0 rounded-full border border-dashed border-orange-500/50 motion-safe:animate-spin animation-duration-[40s]"
               />
               {/* inner solid ring + dark plate */}
               <div
@@ -662,15 +669,15 @@ export default function Home() {
       </section>
 
       {/* ── Footer ───────────────────────────────────────────── */}
-      <footer className="relative border-t border-white/[0.06] bg-[#09090b] px-4 py-8 sm:py-10">
+      <footer className="relative border-t border-white/6 bg-[#09090b] px-4 py-8 sm:py-10">
         {/* amber hairline, same as the audience strip */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+          className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent"
         />
 
         <div className="mx-auto flex max-w-6xl justify-center">
-          <p className="group inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 font-sans text-sm font-medium tracking-tight text-neutral-400 transition-colors hover:border-primary/40 sm:text-base">
+          <p className="group inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-white/3 px-4 py-2 font-sans text-sm font-medium tracking-tight text-neutral-400 transition-colors hover:border-primary/40 sm:text-base">
             <span>made with</span>
             <span
               role="img"
