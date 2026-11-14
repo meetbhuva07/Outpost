@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import type { ReactNode } from "react";
 import {
   hero,
@@ -15,11 +15,35 @@ import {
 
 /* ── macOS window frame (bar + body in one component) ───────────────── */
 
+type Presence = { label: string; agent?: boolean };
+
+/** Small avatar stack shown in the title bar: who is in this file right now. */
+function PresenceStack({ people }: { people: Presence[] }) {
+  return (
+    <div className="flex -space-x-1.5">
+      {people.map((p) => (
+        <span
+          key={p.label}
+          className={`flex size-5 items-center justify-center rounded-full border-2 border-[#0c0c0e] text-[9px] font-bold ${
+            p.agent
+              ? "bg-orange-500/20 text-orange-400"
+              : "bg-zinc-700 text-zinc-200"
+          }`}
+        >
+          {p.agent ? "◆" : p.label}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function WindowFrame({
   title,
+  presence = [],
   children,
 }: {
   title: string;
+  presence?: Presence[];
   children: ReactNode;
 }) {
   return (
@@ -28,8 +52,8 @@ function WindowFrame({
       className="relative w-full overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0c0c0e] shadow-2xl transition-all hover:border-primary/40 hover:shadow-[0_0_35px_rgba(249,115,22,0.08)]"
     >
       {/* Title bar */}
-      <div className="flex items-center justify-between border-b border-white/[0.08] bg-white/[0.02] px-5 py-3">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center border-b border-white/[0.08] bg-white/[0.02] px-5 py-3">
+        <div className="flex flex-1 items-center gap-2">
           <span className="size-2.5 rounded-full bg-[#ff5f56] ring-1 ring-black/20 shadow-sm" />
           <span className="size-2.5 rounded-full bg-[#ffbd2e] ring-1 ring-black/20 shadow-sm" />
           <span className="size-2.5 rounded-full bg-[#27c93f] ring-1 ring-black/20 shadow-sm" />
@@ -37,7 +61,9 @@ function WindowFrame({
         <span className="font-mono text-[11px] font-medium tracking-wide text-zinc-500">
           {title}
         </span>
-        <div className="w-12" />
+        <div className="flex flex-1 justify-end">
+          <PresenceStack people={presence} />
+        </div>
       </div>
 
       {/* Body */}
@@ -68,72 +94,83 @@ function CanvasVisual() {
   const accent = "#ea580c";
 
   return (
-    <WindowFrame title="canvas.workspace">
-      <svg
-        viewBox="0 0 380 220"
-        className="h-auto w-full select-none"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <marker id="canvas-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1.5 L 6 4 L 0 6.5 z" fill="#71717a" />
-          </marker>
-          <marker id="canvas-arrow-accent" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M 0 1.5 L 6 4 L 0 6.5 z" fill={accent} />
-          </marker>
-          <filter id="canvas-glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor={accent} floodOpacity="0.35" />
-          </filter>
-        </defs>
+    <WindowFrame
+      title="canvas.workspace"
+      presence={[{ label: "M" }, { label: "agent", agent: true }]}
+    >
+      {/* Wrapper is relative so the cursor (in %) scales with the responsive SVG */}
+      <div className="relative">
+        <svg
+          viewBox="0 0 380 220"
+          className="h-auto w-full select-none"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <marker id="canvas-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 6 4 L 0 6.5 z" fill="#71717a" />
+            </marker>
+            <marker id="canvas-arrow-accent" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 6 4 L 0 6.5 z" fill={accent} />
+            </marker>
+            <filter id="canvas-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor={accent} floodOpacity="0.35" />
+            </filter>
+          </defs>
 
-        {/* Request */}
-        <rect x="135" y="6" width="110" height="34" rx="17" fill="#18130e" stroke={accent} strokeWidth="1.4" filter="url(#canvas-glow)" />
-        <text x="190" y="28" textAnchor="middle" fill="#fff" fontSize="12" fontFamily="monospace">
-          Request
-        </text>
-        <line x1="190" y1="40" x2="190" y2="66" stroke={line} strokeWidth="1.2" markerEnd="url(#canvas-arrow)" />
+          {/* Request */}
+          <rect x="135" y="6" width="110" height="34" rx="17" fill="#18130e" stroke={accent} strokeWidth="1.4" filter="url(#canvas-glow)" />
+          <text x="190" y="28" textAnchor="middle" fill="#fff" fontSize="12" fontFamily="monospace">
+            Request
+          </text>
+          <line x1="190" y1="40" x2="190" y2="66" stroke={line} strokeWidth="1.2" markerEnd="url(#canvas-arrow)" />
 
-        {/* Decision */}
-        <polygon points="190,68 238,91 190,114 142,91" fill="#141417" stroke="rgba(255,255,255,0.16)" strokeWidth="1.2" />
-        <text x="190" y="95" textAnchor="middle" fill="#fff" fontSize="11" fontFamily="monospace">
-          Authed?
-        </text>
+          {/* Decision */}
+          <polygon points="190,68 238,91 190,114 142,91" fill="#141417" stroke="rgba(255,255,255,0.16)" strokeWidth="1.2" />
+          <text x="190" y="95" textAnchor="middle" fill="#fff" fontSize="11" fontFamily="monospace">
+            Authed?
+          </text>
 
-        {/* Branches: neutral base, then the "yes" path highlighted on top */}
-        <line x1="190" y1="114" x2="190" y2="138" stroke={line} strokeWidth="1.2" />
-        <line x1="85" y1="138" x2="295" y2="138" stroke={line} strokeWidth="1.2" />
-        <line x1="190" y1="114" x2="190" y2="138" stroke={accent} strokeWidth="1.4" />
-        <line x1="85" y1="138" x2="190" y2="138" stroke={accent} strokeWidth="1.4" />
+          {/* Branches: neutral base, then the "yes" path highlighted on top */}
+          <line x1="190" y1="114" x2="190" y2="138" stroke={line} strokeWidth="1.2" />
+          <line x1="85" y1="138" x2="295" y2="138" stroke={line} strokeWidth="1.2" />
+          <line x1="190" y1="114" x2="190" y2="138" stroke={accent} strokeWidth="1.4" />
+          <line x1="85" y1="138" x2="190" y2="138" stroke={accent} strokeWidth="1.4" />
 
-        <text x="135" y="128" textAnchor="middle" fill="#fb923c" fontSize="11" fontFamily="monospace">
-          yes
-        </text>
-        <text x="245" y="128" textAnchor="middle" fill="#a1a1aa" fontSize="11" fontFamily="monospace">
-          no
-        </text>
+          <text x="135" y="128" textAnchor="middle" fill="#fb923c" fontSize="11" fontFamily="monospace">
+            yes
+          </text>
+          <text x="245" y="128" textAnchor="middle" fill="#a1a1aa" fontSize="11" fontFamily="monospace">
+            no
+          </text>
 
-        <line x1="85" y1="138" x2="85" y2="158" stroke={accent} strokeWidth="1.4" markerEnd="url(#canvas-arrow-accent)" />
-        <line x1="295" y1="138" x2="295" y2="158" stroke={line} strokeWidth="1.2" markerEnd="url(#canvas-arrow)" />
+          <line x1="85" y1="138" x2="85" y2="158" stroke={accent} strokeWidth="1.4" markerEnd="url(#canvas-arrow-accent)" />
+          <line x1="295" y1="138" x2="295" y2="158" stroke={line} strokeWidth="1.2" markerEnd="url(#canvas-arrow)" />
 
-        {/* Outcomes */}
-        <rect x="25" y="160" width="120" height="38" rx="8" fill="#1a120b" stroke="rgba(234,88,12,0.5)" strokeWidth="1.2" />
-        <text x="85" y="184" textAnchor="middle" fill="#fff" fontSize="11" fontFamily="monospace">
-          Load workspace
-        </text>
+          {/* Outcomes */}
+          <rect x="25" y="160" width="120" height="38" rx="8" fill="#1a120b" stroke="rgba(234,88,12,0.5)" strokeWidth="1.2" />
+          <text x="85" y="184" textAnchor="middle" fill="#fff" fontSize="11" fontFamily="monospace">
+            Load workspace
+          </text>
 
-        <rect x="222" y="160" width="146" height="38" rx="8" fill="#141417" stroke="rgba(255,255,255,0.14)" strokeWidth="1.2" />
-        <text x="295" y="184" textAnchor="middle" fill="#fff" fontSize="11" fontFamily="monospace">
-          Redirect to sign in
-        </text>
-      </svg>
+          <rect x="222" y="160" width="146" height="38" rx="8" fill="#141417" stroke="rgba(255,255,255,0.14)" strokeWidth="1.2" />
+          <text x="295" y="184" textAnchor="middle" fill="#fff" fontSize="11" fontFamily="monospace">
+            Redirect to sign in
+          </text>
+        </svg>
+
+        <LiveCursor name="Meet" className="left-[66%] top-[44%]" />
+      </div>
     </WindowFrame>
   );
 }
 
 function DocsVisual() {
   return (
-    <WindowFrame title="spec.doc">
+    <WindowFrame
+      title="spec.doc"
+      presence={[{ label: "A" }, { label: "agent", agent: true }]}
+    >
       <div className="space-y-4 py-1">
         <div className="h-5 w-52 rounded-sm bg-zinc-200/90 shadow-sm sm:w-60" />
 
@@ -147,8 +184,8 @@ function DocsVisual() {
           <div className="h-3.5 w-32 rounded-sm bg-zinc-400/90" />
         </div>
 
-        {/* Agent summary callout */}
-        <div className="rounded-xl border border-amber-500/40 bg-gradient-to-r from-amber-950/40 to-amber-900/10 p-4 shadow-sm backdrop-blur-sm">
+        {/* Agent summary callout: the collaborator, with its own cursor */}
+        <div className="relative rounded-xl border border-amber-500/40 bg-gradient-to-r from-amber-950/40 to-amber-900/10 p-4 shadow-sm backdrop-blur-sm">
           <div className="flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest text-amber-400">
             <span className="text-[9px] text-amber-500">◆</span>
             <span>AGENT SUMMARY</span>
@@ -157,6 +194,7 @@ function DocsVisual() {
             <div className="h-1.5 w-11/12 rounded-sm bg-amber-500/35" />
             <div className="h-1.5 w-3/4 rounded-sm bg-amber-500/25" />
           </div>
+          <LiveCursor name="Agent" className="-bottom-3 right-6" />
         </div>
 
         <div className="space-y-2 pt-1">
@@ -194,7 +232,10 @@ const BOARD: { name: string; cards: BoardCard[] }[] = [
 
 function BoardVisual() {
   return (
-    <WindowFrame title="team.board">
+    <WindowFrame
+      title="team.board"
+      presence={[{ label: "M" }, { label: "A" }, { label: "D" }]}
+    >
       <div className="grid grid-cols-3 gap-2.5 py-1 sm:gap-3">
         {BOARD.map((col) => (
           <div key={col.name} className="min-w-0">
@@ -205,7 +246,7 @@ function BoardVisual() {
               {col.cards.map((card) => (
                 <div
                   key={card.title}
-                  className="relative rounded-xl border border-white/[0.08] bg-[#141417] p-2.5 shadow-sm transition-all hover:border-primary/40 hover:bg-primary/[0.03] sm:p-3"
+                  className="relative rounded-xl border border-white/8 bg-[#141417] p-2.5 shadow-sm transition-all hover:border-primary/40 hover:bg-primary/3 sm:p-3"
                 >
                   <p className="flex items-center gap-1 text-xs font-medium text-white/95">
                     {card.done && (
@@ -309,8 +350,8 @@ export default function Home() {
 
       {/* ── Audience Strip ───────────────────────────────────── */}
       <section aria-label="Who it's for" className="relative border-y border-border bg-muted/20">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-primary/30 to-transparent" />
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-6 py-5 sm:py-6">
           <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             Built for
@@ -360,9 +401,12 @@ export default function Home() {
               <span>{workspaceSection.eyebrow}</span>
             </p>
 
-            <h2 className="mt-4 text-balance text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              <span className="block sm:whitespace-nowrap">{workspaceSection.titleLine1}</span>
-              <span className="block">{workspaceSection.titleLine2}</span>
+            {/* Two-tone title: first line quiet, second line full white */}
+            <h2 className="mt-4 text-balance text-center text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+              <span className="block text-neutral-400 sm:whitespace-nowrap">
+                {workspaceSection.titleLine1}
+              </span>
+              <span className="block text-white">{workspaceSection.titleLine2}</span>
             </h2>
           </div>
 
@@ -419,7 +463,7 @@ export default function Home() {
       {/* ── How It Works (Waypoints Route) ───────────────────── */}
       <section
         id="how-it-works"
-        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/[0.08] py-24 sm:py-32"
+        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/8 py-24 sm:py-32"
       >
         {/* Subtle ambient amber flare */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
@@ -487,15 +531,15 @@ export default function Home() {
       {/* ── Pricing (Placeholder) ──────────────────────────────── */}
       <section
         id="pricing"
-        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/[0.08] py-24 sm:py-32"
+        className="relative w-full scroll-mt-16 overflow-hidden border-t border-white/[0.08] bg-black py-24 sm:py-32"
       >
         <div className="mx-auto max-w-5xl px-6 sm:px-10">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="flex items-center justify-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400">
+            <p className="flex items-center justify-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400 uppercase">
               <span aria-hidden="true" className="text-[10px] text-orange-500">◆</span>
               <span>{pricingSection.eyebrow}</span>
             </p>
-            <h2 className="mt-4 text-balance text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h2 className="mt-4 text-balance text-center text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
               <span className="block">{pricingSection.titleLine1}</span>
               <span className="block">{pricingSection.titleLine2}</span>
             </h2>
@@ -506,114 +550,137 @@ export default function Home() {
 
           {/* Placeholder Box */}
           <div className="mx-auto mt-14 flex h-64 sm:h-80 w-full max-w-4xl items-center justify-center rounded-2xl border border-dashed border-white/15 bg-white/[0.01]">
-            <p className="font-mono text-xs font-medium tracking-[0.25em] text-zinc-500">
+            <p className="font-mono text-xs font-medium tracking-[0.25em] text-zinc-500 uppercase">
               {pricingSection.placeholder}
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── Closing CTA (on topo-bg with Mascot) ──────────────── */}
-      <section className="topo-bg relative w-full overflow-hidden border-t border-border py-24 sm:py-32">
-        <div className="mx-auto max-w-5xl px-6 sm:px-10">
-          {/* Framed card with survey-frame crop marks */}
-          <div className="survey-frame relative mx-auto w-full overflow-hidden rounded-3xl border border-white/10 bg-[#0c0c0e]/85 p-8 text-center shadow-2xl backdrop-blur-xl sm:p-14 lg:p-16">
-            {/* Ambient internal amber lighting */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -top-24 left-1/2 h-[400px] w-[650px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,oklch(0.74_0.16_55/0.25),transparent_70%)] blur-3xl"
-            />
+      {/* ── Closing CTA (topo-bg, fluid sizing: phone → desktop) ─ */}
+      <section className="topo-bg relative w-full overflow-hidden px-4 py-[clamp(2.5rem,7vw,4.5rem)]">
+        {/* Map corner coordinates: padding above guarantees they never touch the content */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-4 top-3 select-none font-mono text-[10px] tracking-[0.12em] text-orange-500/80 sm:left-8 sm:top-4 sm:text-[11px] sm:tracking-[0.2em] lg:left-12 lg:top-6"
+        >
+          {closingCta.coordinates.topLeft}
+        </span>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-4 top-3 select-none font-mono text-[10px] tracking-[0.12em] text-orange-500/80 sm:right-8 sm:top-4 sm:text-[11px] sm:tracking-[0.2em] lg:right-12 lg:top-6"
+        >
+          {closingCta.coordinates.topRight}
+        </span>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-3 left-4 select-none font-mono text-[10px] tracking-[0.12em] text-zinc-500 sm:bottom-4 sm:left-8 sm:text-[11px] sm:tracking-[0.2em] lg:bottom-6 lg:left-12"
+        >
+          {closingCta.coordinates.bottomLeft}
+        </span>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-3 right-4 select-none font-mono text-[10px] tracking-[0.12em] text-zinc-500 sm:bottom-4 sm:right-8 sm:text-[11px] sm:tracking-[0.2em] lg:bottom-6 lg:right-12"
+        >
+          {closingCta.coordinates.bottomRight}
+        </span>
 
-            {/* Glowing Pedestal + Mascot */}
-            <div className="relative mx-auto mb-8 inline-flex items-center justify-center">
-              {/* Radial pulse glow */}
+        <div className="relative mx-auto flex max-w-4xl flex-col items-center text-center">
+          {/* Mascot in a compass badge (badge scales 96px → 128px; everything inside is in %) */}
+          <div className="relative mb-6 sm:mb-7">
+            <div className="relative flex size-[clamp(6rem,22vw,8rem)] items-center justify-center">
+              {/* soft glow */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -inset-6 rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.35),transparent_70%)] blur-2xl"
+                className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.28),transparent_70%)] blur-xl"
               />
-              <div className="relative flex items-center justify-center rounded-2xl border border-orange-500/30 bg-[#16120e]/90 p-4 shadow-[0_0_35px_rgba(249,115,22,0.2)]">
-                <Image
-                  src={closingCta.mascot}
-                  alt="Outpost Mascot"
-                  width={180}
-                  height={180}
-                  className="size-28 object-contain drop-shadow-[0_10px_25px_rgba(249,115,22,0.3)] transition-transform duration-300 hover:scale-105 sm:size-36"
-                  priority
+              {/* slow-rotating dashed route ring */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 rounded-full border border-dashed border-orange-500/50 motion-safe:animate-spin [animation-duration:40s]"
+              />
+              {/* inner solid ring + dark plate */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-[9%] rounded-full border border-orange-500/40 bg-[#16120e] shadow-[inset_0_0_20px_rgba(249,115,22,0.12)]"
+              />
+              {/* N / E / S / W waypoints */}
+              {[
+                "left-1/2 -top-[3px] -translate-x-1/2",
+                "left-1/2 -bottom-[3px] -translate-x-1/2",
+                "top-1/2 -left-[3px] -translate-y-1/2",
+                "top-1/2 -right-[3px] -translate-y-1/2",
+              ].map((pos) => (
+                <span
+                  key={pos}
+                  aria-hidden="true"
+                  className={`absolute size-1.5 rotate-45 bg-orange-500 ${pos}`}
                 />
-              </div>
+              ))}
+              <Image
+                src={closingCta.mascot}
+                alt="Outpost mascot"
+                width={96}
+                height={96}
+                className="relative size-[58%] object-contain drop-shadow-[0_6px_14px_rgba(0,0,0,0.5)]"
+                priority
+              />
             </div>
 
-            {/* Eyebrow */}
-            <p className="flex items-center justify-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400">
-              <span aria-hidden="true" className="text-[10px] text-orange-500">◆</span>
-              <span>{closingCta.eyebrow}</span>
-            </p>
+            {/* map-pin style tag */}
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-orange-500/40 bg-[#1a120c] px-2.5 py-0.5 font-mono text-[10px] text-orange-400 sm:text-[11px]"
+            >
+              ◆ you are here
+            </span>
+          </div>
 
-            {/* Headline with 'outpost' highlighted */}
-            <h2 className="mx-auto mt-4 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Set up your <span className="text-primary">outpost</span> today
-            </h2>
+          {/* Headline: 30px on phones → 60px on desktop, always two lines */}
+          <h2 className="text-balance text-[clamp(1.875rem,6.5vw,3.75rem)] font-bold leading-[1.05] tracking-tight text-white">
+            <span className="block">{closingCta.titleLine1}</span>
+            <span className="block">{closingCta.titleLine2}</span>
+          </h2>
 
-            {/* Subtitle */}
-            <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              {closingCta.subtitle}
-            </p>
-
-            {/* CTAs */}
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link
-                href={closingCta.primaryCta.href}
-                className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-8 text-base font-medium text-primary-foreground shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-all hover:bg-primary/90 hover:shadow-[0_0_45px_rgba(249,115,22,0.5)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              >
-                {closingCta.primaryCta.label}
-              </Link>
-              <Link
-                href={closingCta.secondaryCta.href}
-                className="inline-flex h-12 items-center justify-center rounded-md border border-border bg-background/60 px-8 text-base font-medium text-foreground backdrop-blur-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-              >
-                {closingCta.secondaryCta.label}
-              </Link>
-            </div>
-
-            {/* Trust Badges */}
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-white/[0.06] pt-6 text-xs text-neutral-400">
-              <span className="flex items-center gap-2">
-                <span className="inline-block size-1 rotate-45 bg-primary" />
-                Free during Early Access
+          <div className="relative mt-6 sm:mt-8">
+            {/* dashed route ring around the button */}
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -inset-1.5 rounded-full border border-dashed border-orange-500/40"
+            />
+            <Link
+              href={closingCta.cta.href}
+              className="group relative inline-flex h-12 items-center gap-3 whitespace-nowrap rounded-full bg-[#f97316] pl-6 pr-1.5 text-sm font-semibold text-zinc-950 shadow-[0_10px_30px_-8px_rgba(249,115,22,0.6)] transition-all hover:bg-[#ea580c] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f97316] sm:text-base"
+            >
+              <span>{closingCta.cta.label}</span>
+              <span className="flex size-9 items-center justify-center rounded-full bg-zinc-950 text-orange-500 transition-transform group-hover:translate-x-0.5">
+                <ArrowRight aria-hidden="true" className="size-4 stroke-[2.4]" />
               </span>
-              <span className="flex items-center gap-2">
-                <span className="inline-block size-1 rotate-45 bg-primary" />
-                No credit card required
-              </span>
-              <span className="flex items-center gap-2">
-                <span className="inline-block size-1 rotate-45 bg-primary" />
-                Live in 30 seconds
-              </span>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* ── Footer ───────────────────────────────────────────── */}
-      <footer className="border-t border-white/[0.08] bg-[#09090b] py-12">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 sm:flex-row sm:px-10">
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/brand/logo-navbar-dark.png"
-              alt="OutPost"
-              width={160}
-              height={40}
-              className="h-7 w-auto"
-            />
-          </Link>
+      <footer className="relative border-t border-white/[0.06] bg-[#09090b] px-4 py-8 sm:py-10">
+        {/* amber hairline, same as the audience strip */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+        />
 
-          <p className="font-mono text-sm text-neutral-400">
-            made with <span className="text-red-500">❤️</span> by{" "}
+        <div className="mx-auto flex max-w-6xl justify-center">
+          <p className="group inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 font-sans text-sm font-medium tracking-tight text-neutral-400 transition-colors hover:border-primary/40 sm:text-base">
+            <span>made with</span>
+            <span
+              role="img"
+              aria-label="love"
+              className="inline-block transition-transform duration-300 group-hover:scale-125"
+            >
+              ❤️
+            </span>
+            <span>by</span>
             <span className="font-semibold text-white">Meet Bhuva</span>
-          </p>
-
-          <p className="font-mono text-xs text-zinc-500">
-            © {new Date().getFullYear()} Outpost. All rights reserved.
           </p>
         </div>
       </footer>

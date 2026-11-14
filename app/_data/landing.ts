@@ -123,11 +123,14 @@ export const workspaceSection = {
 } as const;
 
 export const closingCta = {
-  eyebrow: "READY TO BUILD?",
-  headline: "Set up your outpost today",
-  subtitle:
-    "Bring your whole team into one shared workspace where your agent diagrams, writes, and tracks work alongside you.",
-  primaryCta: { label: "Start building free", href: "/sign-up" },
-  secondaryCta: { label: "See how it works", href: "#how-it-works" },
+  titleLine1: "Give your workspace",
+  titleLine2: "a collaborator",
+  cta: { label: "Get started free", href: "/sign-up" },
   mascot: "/brand/mascot-dark.png",
+  coordinates: {
+    topLeft: "N 47°38'",
+    topRight: "ELEV 2,140 M",
+    bottomLeft: "BASE CAMP",
+    bottomRight: "W 122°20'",
+  },
 };
