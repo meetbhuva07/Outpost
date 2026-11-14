@@ -155,16 +155,19 @@ export default function Home() {
       >
         <div className="mx-auto max-w-6xl px-6 sm:px-10">
           {/* Section Header */}
-          <div className="mx-auto max-w-2xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <p className="flex items-center justify-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400">
               <span className="text-[10px] text-orange-500">◆</span>
               <span>{workspaceSection.eyebrow}</span>
             </p>
 
-            <h2 className="mt-4 text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              {workspaceSection.titleLine1}
-              <br />
-              {workspaceSection.titleLine2}
+            <h2 className="mt-4 text-center text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <span className="block whitespace-normal sm:whitespace-nowrap">
+                {workspaceSection.titleLine1}
+              </span>
+              <span className="block">
+                {workspaceSection.titleLine2}
+              </span>
             </h2>
           </div>
 
