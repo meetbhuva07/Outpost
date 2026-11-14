@@ -515,49 +515,81 @@ export default function Home() {
 
       {/* ── Closing CTA (on topo-bg with Mascot) ──────────────── */}
       <section className="topo-bg relative w-full overflow-hidden border-t border-border py-24 sm:py-32">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center px-6 text-center sm:px-10">
-          {/* Mascot */}
-          <div className="relative mb-8">
+        <div className="mx-auto max-w-5xl px-6 sm:px-10">
+          {/* Framed card with survey-frame crop marks */}
+          <div className="survey-frame relative mx-auto w-full overflow-hidden rounded-3xl border border-white/10 bg-[#0c0c0e]/85 p-8 text-center shadow-2xl backdrop-blur-xl sm:p-14 lg:p-16">
+            {/* Ambient internal amber lighting */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.3),transparent_70%)] blur-2xl"
+              className="pointer-events-none absolute -top-24 left-1/2 h-[400px] w-[650px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,oklch(0.74_0.16_55/0.25),transparent_70%)] blur-3xl"
             />
-            <Image
-              src={closingCta.mascot}
-              alt="Outpost Mascot"
-              width={200}
-              height={200}
-              className="mx-auto size-36 object-contain drop-shadow-[0_15px_30px_rgba(249,115,22,0.25)] sm:size-44"
-            />
-          </div>
 
-          <p className="flex items-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400">
-            <span aria-hidden="true" className="text-[10px] text-orange-500">◆</span>
-            <span>{closingCta.eyebrow}</span>
-          </p>
+            {/* Glowing Pedestal + Mascot */}
+            <div className="relative mx-auto mb-8 inline-flex items-center justify-center">
+              {/* Radial pulse glow */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-6 rounded-full bg-[radial-gradient(circle,oklch(0.74_0.16_55/0.35),transparent_70%)] blur-2xl"
+              />
+              <div className="relative flex items-center justify-center rounded-2xl border border-orange-500/30 bg-[#16120e]/90 p-4 shadow-[0_0_35px_rgba(249,115,22,0.2)]">
+                <Image
+                  src={closingCta.mascot}
+                  alt="Outpost Mascot"
+                  width={180}
+                  height={180}
+                  className="size-28 object-contain drop-shadow-[0_10px_25px_rgba(249,115,22,0.3)] transition-transform duration-300 hover:scale-105 sm:size-36"
+                  priority
+                />
+              </div>
+            </div>
 
-          <h2 className="mx-auto mt-4 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            {closingCta.headline}
-          </h2>
+            {/* Eyebrow */}
+            <p className="flex items-center justify-center gap-2 font-mono text-xs font-medium tracking-[0.22em] text-neutral-400">
+              <span aria-hidden="true" className="text-[10px] text-orange-500">◆</span>
+              <span>{closingCta.eyebrow}</span>
+            </p>
 
-          <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            {closingCta.subtitle}
-          </p>
+            {/* Headline with 'outpost' highlighted */}
+            <h2 className="mx-auto mt-4 max-w-2xl text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Set up your <span className="text-primary">outpost</span> today
+            </h2>
 
-          {/* CTA Buttons */}
-          <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href={closingCta.primaryCta.href}
-              className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-8 text-base font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-[0_0_25px_rgba(249,115,22,0.3)]"
-            >
-              {closingCta.primaryCta.label}
-            </Link>
-            <Link
-              href={closingCta.secondaryCta.href}
-              className="inline-flex h-12 items-center justify-center rounded-md border border-border bg-background/60 px-8 text-base font-medium text-foreground backdrop-blur-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground"
-            >
-              {closingCta.secondaryCta.label}
-            </Link>
+            {/* Subtitle */}
+            <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+              {closingCta.subtitle}
+            </p>
+
+            {/* CTAs */}
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link
+                href={closingCta.primaryCta.href}
+                className="inline-flex h-12 items-center justify-center rounded-md bg-primary px-8 text-base font-medium text-primary-foreground shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-all hover:bg-primary/90 hover:shadow-[0_0_45px_rgba(249,115,22,0.5)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                {closingCta.primaryCta.label}
+              </Link>
+              <Link
+                href={closingCta.secondaryCta.href}
+                className="inline-flex h-12 items-center justify-center rounded-md border border-border bg-background/60 px-8 text-base font-medium text-foreground backdrop-blur-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              >
+                {closingCta.secondaryCta.label}
+              </Link>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 border-t border-white/[0.06] pt-6 text-xs text-neutral-400">
+              <span className="flex items-center gap-2">
+                <span className="inline-block size-1 rotate-45 bg-primary" />
+                Free during Early Access
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="inline-block size-1 rotate-45 bg-primary" />
+                No credit card required
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="inline-block size-1 rotate-45 bg-primary" />
+                Live in 30 seconds
+              </span>
+            </div>
           </div>
         </div>
       </section>
