@@ -170,20 +170,20 @@ const BOARD: { name: string; cards: BoardCard[] }[] = [
     name: "PLANNING",
     cards: [
       { title: "Onboarding flow", width: "w-12" },
-      { title: "Billing ERD", width: "w-12" },
+      { title: "Billing ERD", width: "w-12", cursor: "Meet" },
     ],
   },
   {
     name: "IN PROGRESS",
     cards: [
-      { title: "API architecture", width: "w-14", cursor: "Maya" },
-      { title: "Launch spec", width: "w-14", cursor: "Dev" },
+      { title: "API architecture", width: "w-14" },
+      { title: "Launch spec", width: "w-14", cursor: "Aastha" },
       { title: "Org chart", width: "w-14" },
     ],
   },
   {
     name: "DONE",
-    cards: [{ title: "Brand brief", width: "w-14", done: true }],
+    cards: [{ title: "Brand brief", width: "w-14", cursor: "Darshil", done: true }],
   },
 ];
 
